@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace NEventStore.Example
 {
     using System;
@@ -19,33 +21,36 @@ namespace NEventStore.Example
 
         private static void Main()
         {
-            using (var scope = new TransactionScope())
+            var dbContext = new CrudContext();
+            dbContext.Data.Add(new Foo {Bar = (dbContext.Data.Count() + 1).ToString()});
+
+            //using (var scope = new TransactionScope())
             using (store = WireupEventStore())
             {
                 OpenOrCreateStream();
                 AppendToStream();
                 TakeSnapshot();
                 LoadFromSnapshotForwardAndAppend();
-                scope.Complete();
+                //scope.Complete();
             }
 
             Console.WriteLine(Resources.PressAnyKey);
-            Console.ReadKey();
+            Console.ReadKey(intercept:true);
         }
 
         private static IStoreEvents WireupEventStore()
         {
             return Wireup.Init()
                          .LogToOutputWindow()
-                         .UsingInMemoryPersistence()
+                         //.UsingInMemoryPersistence()
                          .UsingSqlPersistence("EventStore") // Connection string is in app.config
                          .WithDialect(new MsSqlDialect())
-                         .EnlistInAmbientTransaction() // two-phase commit
+                         //.EnlistInAmbientTransaction() // two-phase commit
                          .InitializeStorageEngine()
-                         .TrackPerformanceInstance("example")
+                         //.TrackPerformanceInstance("example")
                          .UsingJsonSerialization()
                          .Compress()
-                         .EncryptWith(EncryptionKey)
+                         //.EncryptWith(EncryptionKey)
                          .HookIntoPipelineUsing(new[] {new AuthorizationPipelineHook()})
                          .UsingSynchronousDispatchScheduler()
                          .DispatchTo(new DelegateMessageDispatcher(DispatchCommit))

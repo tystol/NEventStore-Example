@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="AggregateMemento.cs" />
     <Compile Include="AuthorizationPipelineHook.cs" />
+    <Compile Include="CrudData.cs" />
     <Compile Include="MainProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">
@@ -50,12 +51,19 @@
     <Compile Include="SomeDomainEvent.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="EventStore">
       <HintPath>..\packages\EventStore.3.2.0.28\lib\net40\EventStore.dll</HintPath>
     </Reference>
     <Reference Include="EventStore.Serialization.Json">
       <HintPath>..\packages\EventStore.Serialization.Json.3.2.0.28\lib\net40\EventStore.Serialization.Json.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Transactions" />
   </ItemGroup>
   <ItemGroup>
